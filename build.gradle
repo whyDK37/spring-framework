@@ -1,5 +1,7 @@
 buildscript {
 	repositories {
+		mavenLocal()
+		//maven { url "http://repo.maven.apache.org/maven2" }
 		maven { url "https://repo.spring.io/plugins-release" }
 	}
 	dependencies {
@@ -27,11 +29,12 @@ configure(allprojects) { project ->
 	apply plugin: "propdeps"
 	apply plugin: "java"
 	apply plugin: "test-source-set-dependencies"
+	apply plugin: "idea"
 	apply from: "${gradleScriptDir}/ide.gradle"
 
 	compileJava {
-		sourceCompatibility=1.5
-		targetCompatibility=1.5
+		sourceCompatibility=1.7
+		targetCompatibility=1.7
 	}
 	compileTestJava {
 		sourceCompatibility=1.7
@@ -74,6 +77,7 @@ configure(allprojects) { project ->
 	}
 
 	repositories {
+		mavenLocal()
 		maven { url "https://repo.spring.io/libs-release" }
 	}
 
@@ -377,8 +381,8 @@ project("spring-oxm") {
 	compileTestJava {
 		// necessary to avoid java.lang.VerifyError on jibx compilation
 		// see http://jira.codehaus.org/browse/JIBX-465
-		sourceCompatibility=1.6
-		targetCompatibility=1.6
+		sourceCompatibility=1.7
+		targetCompatibility=1.7
 	}
 
 	dependencies {
@@ -521,8 +525,8 @@ project("spring-orm") {
 
 	compileTestJava {
 		// necessary to avoid java.lang.VerifyError on TopLink compilation
-		sourceCompatibility=1.6
-		targetCompatibility=1.6
+		sourceCompatibility=1.7
+		targetCompatibility=1.7
 	}
 
 	dependencies {
@@ -555,6 +559,7 @@ project("spring-orm") {
 }
 
 /**
+*/
 project("spring-orm-hibernate4") {
 	description = "Spring Object/Relational Mapping - Hibernate 4 support"
 	merge.into = project(":spring-orm")
@@ -568,7 +573,6 @@ project("spring-orm-hibernate4") {
 		optional("javax.servlet:servlet-api:2.5")
 	}
 }
-*/
 
 project("spring-webmvc") {
 	description = "Spring Web MVC"
@@ -628,7 +632,7 @@ project("spring-webmvc") {
 	// pick up DispatcherServlet.properties in src/main
 	sourceSets.main.resources.srcDirs += "src/main/java"
 }
-/**
+
 project("spring-webmvc-tiles3") {
 	description = "Spring Framework Tiles3 Integration"
 	merge.into = project(":spring-webmvc")
@@ -660,7 +664,6 @@ project("spring-webmvc-tiles3") {
 		testCompile("org.slf4j:slf4j-jcl:${slf4jVersion}")
 	}
 }
-**/
 project("spring-webmvc-portlet") {
 	description = "Spring Web Portlet"
 
@@ -731,7 +734,7 @@ project("spring-test") {
 	}
 }
 
-/**
+
 project("spring-test-mvc") {
 	description = "Spring Test MVC Framework"
 	merge.into = project(":spring-test")
@@ -762,7 +765,6 @@ project("spring-test-mvc") {
 		testCompile("org.slf4j:slf4j-jcl:${slf4jVersion}")
 	}
 }
-**/
 project("spring-struts") {
 	description = "Spring Struts"
 	dependencies {
