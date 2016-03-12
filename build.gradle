@@ -844,6 +844,29 @@ project("spring-framework-bom") {
 	}
 }
 
+
+project("spring-learn") {
+	description = "Spring learn"
+
+	dependencies {
+		compile(project(":spring-aop"))  // for @Async support
+		compile(project(":spring-beans"))  // for @Configurable support
+		compile(project(":spring-context"))  // for @Enable* support
+		compile(project(":spring-context-support"))  // for JavaMail support
+		compile(project(":spring-orm"))  // for JPA exception translation support
+		compile(project(":spring-tx"))  // for JPA, @Transactional support
+		compile(project(":spring-core"))  // for CodeStyleAspect
+		testCompile(project(":spring-test"))
+		testCompile("javax.mail:mail:1.4.7")
+	}
+
+	eclipse.project {
+		natures += "org.eclipse.ajdt.ui.ajnature"
+		buildCommands = [new org.gradle.plugins.ide.eclipse.model.
+				BuildCommand("org.eclipse.ajdt.core.ajbuilder")]
+	}
+}
+
 configure(rootProject) {
 	description = "Spring Framework"
 
