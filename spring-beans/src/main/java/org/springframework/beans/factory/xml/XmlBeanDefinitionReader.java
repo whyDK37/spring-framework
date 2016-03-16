@@ -315,7 +315,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 		if (logger.isInfoEnabled()) {
 			logger.info("Loading XML bean definitions from " + encodedResource.getResource());
 		}
-		//通过属性记录已加载的资源
+		//why 通过属性记录已加载的资源
 		Set<EncodedResource> currentResources = this.resourcesCurrentlyBeingLoaded.get();
 		if (currentResources == null) {
 			currentResources = new HashSet<EncodedResource>(4);
@@ -326,15 +326,15 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 					"Detected cyclic loading of " + encodedResource + " - check your import definitions!");
 		}
 		try {
-			//从 encodedResource 中获取已经封装的resource对象并再次从resource中获取inputStream
+			//why 从 encodedResource 中获取已经封装的resource对象并再次从resource中获取inputStream
 			InputStream inputStream = encodedResource.getResource().getInputStream();
 			try {
-				//初始化org.xml.sax.InputSource
+				//why 初始化org.xml.sax.InputSource
 				InputSource inputSource = new InputSource(inputStream);
 				if (encodedResource.getEncoding() != null) {
 					inputSource.setEncoding(encodedResource.getEncoding());
 				}
-				//实际加载 BeanDefinition 的方法，核心逻辑
+				//why 实际加载 BeanDefinition 的方法，核心逻辑
 				return doLoadBeanDefinitions(inputSource, encodedResource.getResource());
 			}
 			finally {
@@ -388,9 +388,9 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 	protected int doLoadBeanDefinitions(InputSource inputSource, Resource resource)
 			throws BeanDefinitionStoreException {
 		try {
-			//
+			//why 确定spring.xml的校验模式，dtd或xsd
 			int validationMode = getValidationModeForResource(resource);
-			//
+			//why 加载w3c document对象
 			Document doc = this.documentLoader.loadDocument(
 					inputSource, getEntityResolver(), this.errorHandler, validationMode, isNamespaceAware());
 			//
@@ -495,6 +495,8 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 	 */
 	@SuppressWarnings("deprecation")
 	public int registerBeanDefinitions(Document doc, Resource resource) throws BeanDefinitionStoreException {
+		//why 通过private Class<?> documentReaderClass = DefaultBeanDefinitionDocumentReader.class;
+		//创建 DefaultBeanDefinitionDocumentReader，实现了默认beans标签的解析
 		BeanDefinitionDocumentReader documentReader = createBeanDefinitionDocumentReader();
 		documentReader.setEnvironment(getEnvironment());
 		int countBefore = getRegistry().getBeanDefinitionCount();

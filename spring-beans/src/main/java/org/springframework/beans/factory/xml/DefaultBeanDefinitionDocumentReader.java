@@ -125,6 +125,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 	 * Register each bean definition within the given root {@code <beans/>} element.
 	 */
 	protected void doRegisterBeanDefinitions(Element root) {
+		//why 读取beans的profile属性，可以配置profile区分运行环境，如开发环境和生产环境。
 		String profileSpec = root.getAttribute(PROFILE_ATTRIBUTE);
 		if (StringUtils.hasText(profileSpec)) {
 			String[] specifiedProfiles = StringUtils.tokenizeToStringArray(
@@ -195,15 +196,19 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 	}
 
 	private void parseDefaultElement(Element ele, BeanDefinitionParserDelegate delegate) {
+		//解析 import 标签
 		if (delegate.nodeNameEquals(ele, IMPORT_ELEMENT)) {
 			importBeanDefinitionResource(ele);
 		}
+		//解析 alias 标签
 		else if (delegate.nodeNameEquals(ele, ALIAS_ELEMENT)) {
 			processAliasRegistration(ele);
 		}
+		//解析 bean 标签
 		else if (delegate.nodeNameEquals(ele, BEAN_ELEMENT)) {
 			processBeanDefinition(ele, delegate);
 		}
+		//解析 beans 标签
 		else if (delegate.nodeNameEquals(ele, NESTED_BEANS_ELEMENT)) {
 			// recurse
 			doRegisterBeanDefinitions(ele);

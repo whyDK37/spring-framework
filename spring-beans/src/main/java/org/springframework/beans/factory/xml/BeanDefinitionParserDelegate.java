@@ -451,6 +451,7 @@ public class BeanDefinitionParserDelegate {
 		String id = ele.getAttribute(ID_ATTRIBUTE);
 		String nameAttr = ele.getAttribute(NAME_ATTRIBUTE);
 
+		//why 分割 name 属性
 		List<String> aliases = new ArrayList<String>();
 		if (StringUtils.hasLength(nameAttr)) {
 			String[] nameArr = StringUtils.tokenizeToStringArray(nameAttr, MULTI_VALUE_ATTRIBUTE_DELIMITERS);
@@ -479,6 +480,7 @@ public class BeanDefinitionParserDelegate {
 								beanDefinition, this.readerContext.getRegistry(), true);
 					}
 					else {
+						//why 如果不存在beanname ,按照spring提供的命名规则生成beanname
 						beanName = this.readerContext.generateBeanName(beanDefinition);
 						// Register an alias for the plain bean class name, if still possible,
 						// if the generator returned the class name plus a suffix.
@@ -538,26 +540,36 @@ public class BeanDefinitionParserDelegate {
 		this.parseState.push(new BeanEntry(beanName));
 
 		String className = null;
+		//why 解析class 属性
 		if (ele.hasAttribute(CLASS_ATTRIBUTE)) {
 			className = ele.getAttribute(CLASS_ATTRIBUTE).trim();
 		}
 
 		try {
+			//why 解析 parent 属性
 			String parent = null;
 			if (ele.hasAttribute(PARENT_ATTRIBUTE)) {
 				parent = ele.getAttribute(PARENT_ATTRIBUTE);
 			}
+			//why 创建用于承载属性的 AbstractBeanDefinition 类型的 GenericBeanDefinition
 			AbstractBeanDefinition bd = createBeanDefinition(className, parent);
 
+			//why 解析bean 的各种属性
 			parseBeanDefinitionAttributes(ele, beanName, containingBean, bd);
 			bd.setDescription(DomUtils.getChildElementValueByTagName(ele, DESCRIPTION_ELEMENT));
 
+			//why 解析元数据
 			parseMetaElements(ele, bd);
+			//why 解析 lookup-method
 			parseLookupOverrideSubElements(ele, bd.getMethodOverrides());
+			//why 解析 replace-method
 			parseReplacedMethodSubElements(ele, bd.getMethodOverrides());
 
+			//why 解析构造函数参数
 			parseConstructorArgElements(ele, bd);
+			//why 解析property子标签
 			parsePropertyElements(ele, bd);
+			//why 解析 qualifier标签
 			parseQualifierElements(ele, bd);
 
 			bd.setResource(this.readerContext.getResource());
