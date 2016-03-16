@@ -316,11 +316,14 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 	 * and registering it with the registry.
 	 */
 	protected void processBeanDefinition(Element ele, BeanDefinitionParserDelegate delegate) {
+		//why 经过这个方法，dbHolder 实例已经包含我们配置文件中的各种属性，class,name,id,alias之类的属性。
 		BeanDefinitionHolder bdHolder = delegate.parseBeanDefinitionElement(ele);
+		//why 如果节点下还有自定义属性，还需要解析自定义标签。
 		if (bdHolder != null) {
 			bdHolder = delegate.decorateBeanDefinitionIfRequired(ele, bdHolder);
 			try {
 				// Register the final decorated instance.
+				// why 把解析后的 bdHolder 注册到 beanRegistry
 				BeanDefinitionReaderUtils.registerBeanDefinition(bdHolder, getReaderContext().getRegistry());
 			}
 			catch (BeanDefinitionStoreException ex) {
@@ -328,6 +331,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 						bdHolder.getBeanName() + "'", ele, ex);
 			}
 			// Send registration event.
+			// why 发出注册时间，通知相关的监听器，这个bean已经注册完成。
 			getReaderContext().fireComponentRegistered(new BeanComponentDefinition(bdHolder));
 		}
 	}
