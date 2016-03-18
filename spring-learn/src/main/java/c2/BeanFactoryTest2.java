@@ -1,5 +1,6 @@
 package c2;
 
+import c0.MyTestBean;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
@@ -21,10 +22,13 @@ public class BeanFactoryTest2 {
         BeanDefinition beanDefinition = bf.getBeanDefinition("myTestBean");
         System.out.println(beanDefinition.getClass().toGenericString());
         System.out.println(beanDefinition.toString());
+        System.out.println(beanDefinition.getAttribute("m1"));
 
         System.out.println(bf.containsLocalBean("myTestBean"));
         System.out.println(bf.isBeanNameInUse("myTestBeanA"));
         System.out.println(bf.getBeanDefinitionCount());
         System.out.println(bf.getBeanDefinitionNames());
+
+
     }
 }

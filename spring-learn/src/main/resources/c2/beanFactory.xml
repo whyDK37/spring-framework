@@ -3,8 +3,9 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd" profile="">
 
-    <bean id="myTestBean" class="c2.MyTestBean">
+    <bean id="myTestBean" class="c0.MyTestBean">
         <property name="teststr" value="test"/>
+        <meta key="m1" value="meta data"/>
     </bean>
     <alias name="myTestBean" alias="myTestBeanA"/>
 </beans>

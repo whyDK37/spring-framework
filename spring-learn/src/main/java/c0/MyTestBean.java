@@ -1,4 +1,4 @@
-package c2;
+package c0;
 
 /**
  * Created by whydk on 2016/3/10.
@@ -13,4 +13,6 @@ public class MyTestBean {
     public void setTeststr(String teststr) {
         this.teststr = teststr;
     }
+
+
 }

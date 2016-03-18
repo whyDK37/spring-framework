@@ -320,6 +320,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
 		BeanDefinitionHolder bdHolder = delegate.parseBeanDefinitionElement(ele);
 		//why 如果节点下还有自定义属性，还需要解析自定义标签。
 		if (bdHolder != null) {
+			//why 如果需要，设置BeanDefinition的非默认名字空间属性。
 			bdHolder = delegate.decorateBeanDefinitionIfRequired(ele, bdHolder);
 			try {
 				// Register the final decorated instance.
