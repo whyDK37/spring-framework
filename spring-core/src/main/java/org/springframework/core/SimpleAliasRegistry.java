@@ -44,10 +44,12 @@ public class SimpleAliasRegistry implements AliasRegistry {
 	public void registerAlias(String name, String alias) {
 		Assert.hasText(name, "'name' must not be empty");
 		Assert.hasText(alias, "'alias' must not be empty");
+		// 如果相同，则删除 alias 中的记录
 		if (alias.equals(name)) {
 			this.aliasMap.remove(alias);
 		}
 		else {
+			// 如果不允许覆盖则抛出异常
 			if (!allowAliasOverriding()) {
 				String registeredName = this.aliasMap.get(alias);
 				if (registeredName != null && !registeredName.equals(name)) {

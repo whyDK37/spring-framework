@@ -137,6 +137,9 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 
 	private volatile Object beanClass;
 
+	/**
+	 * 对应bean scope属性。
+	 */
 	private String scope = SCOPE_DEFAULT;
 
 	private boolean singleton = true;
@@ -149,45 +152,91 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 
 	private int autowireMode = AUTOWIRE_NO;
 
+	/**
+	 * 依赖检查，spring 3.0 后弃用该属性
+	 */
 	private int dependencyCheck = DEPENDENCY_CHECK_NONE;
 
 	private String[] dependsOn;
 
+	/**
+	 * 如果为false ，容器在查找对象自动装配时将不考虑该bean，及不会被考虑作为其他bean自动装配的候选者。
+	 * 但该bean可以自动装配其他bean.
+	 */
 	private boolean autowireCandidate = true;
 
 	private boolean primary = false;
 
+	/**
+	 * 记录qualifier,对应xml中 qualifier .
+	 */
 	private final Map<String, AutowireCandidateQualifier> qualifiers =
 			new LinkedHashMap<String, AutowireCandidateQualifier>(0);
 
+	/**
+	 * 访问非公开的构造器和方法，程序设置。
+	 */
 	private boolean nonPublicAccessAllowed = true;
 
+	/**
+	 * 是否已宽松的模式解析构造函数，默认为true
+	 */
 	private boolean lenientConstructorResolution = true;
 
+	/**
+	 * 记录构造函数参数，对应 xml 中 constructor-arg
+	 */
 	private ConstructorArgumentValues constructorArgumentValues;
 
+	/**
+	 * 普通属性集合
+	 */
 	private MutablePropertyValues propertyValues;
 
+	/**
+	 * 记录lookup-method,replace-method方法
+	 */
 	private MethodOverrides methodOverrides = new MethodOverrides();
 
+	/**
+	 * 对应 xml 中 factory-bean
+	 */
 	private String factoryBeanName;
 
+	/**
+	 * 对应 xml 中 factory-method
+	 */
 	private String factoryMethodName;
 
 	private String initMethodName;
 
 	private String destroyMethodName;
 
+	/**
+	 * 是否执行 init-method
+	 */
 	private boolean enforceInitMethod = true;
 
+	/**
+	 * 是否执行 destroy-method
+	 */
 	private boolean enforceDestroyMethod = true;
 
+	/**
+	 * 是否是程序定义的二不是应用程序本身定义的，创建aop时为true
+	 */
 	private boolean synthetic = false;
 
+	/**
+	 * 定义 bean 的应用角色，应用、用户等，spring 内部使用，与用户无关，	是某些复杂配置的一部分。
+	 */
 	private int role = BeanDefinition.ROLE_APPLICATION;
 
 	private String description;
 
+	/**
+	 * 当前 bean 定义的资源
+	 */
 	private Resource resource;
 
 

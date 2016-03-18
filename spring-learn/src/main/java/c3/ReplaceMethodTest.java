@@ -1,5 +1,7 @@
 package c3;
 
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.core.io.ClassPathResource;
@@ -17,5 +19,7 @@ public class ReplaceMethodTest {
         ChangeMe changeMe = bf.getBean("changeMe", ChangeMe.class);
         System.out.println(changeMe.getClass().toString());
         changeMe.changeMe();
+        AbstractBeanDefinition beanDefinition = (AbstractBeanDefinition)bf.getBeanDefinition("changeMe");
+        System.out.println(beanDefinition.isSynthetic());
     }
 }

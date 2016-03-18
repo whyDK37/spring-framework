@@ -1474,9 +1474,13 @@ public class BeanDefinitionParserDelegate {
 	private BeanDefinitionHolder decorateIfRequired(
 			Node node, BeanDefinitionHolder originalDef, BeanDefinition containingBd) {
 
+		// 获取自定义标签的名字空间
 		String namespaceUri = getNamespaceURI(node);
+		// 如果非默认名字空间的节点，装饰 BeanDefinition
 		if (!isDefaultNamespace(namespaceUri)) {
+			// 根据命名空间，找到对应的处理者（类）
 			NamespaceHandler handler = this.readerContext.getNamespaceHandlerResolver().resolve(namespaceUri);
+			// 如果处理者存在，执行装饰操作
 			if (handler != null) {
 				return handler.decorate(node, originalDef, new ParserContext(this.readerContext, this, containingBd));
 			}

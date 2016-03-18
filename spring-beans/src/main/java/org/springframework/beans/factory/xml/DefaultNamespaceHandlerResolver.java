@@ -63,7 +63,7 @@ public class DefaultNamespaceHandlerResolver implements NamespaceHandlerResolver
 	/** Resource location to search for */
 	private final String handlerMappingsLocation;
 
-	/** Stores the mappings from namespace URI to NamespaceHandler class name / instance */
+	/** 缓存 Stores the mappings from namespace URI to NamespaceHandler class name / instance */
 	private volatile Map<String, Object> handlerMappings;
 
 
