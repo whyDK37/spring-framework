@@ -146,6 +146,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
         this.delegate = createDelegate(this.readerContext, root, parent);
 
         preProcessXml(root);
+        // 解析 BeanDefinition ，分为默认名字空间和自定义名字空间。
         parseBeanDefinitions(root, this.delegate);
         postProcessXml(root);
 
@@ -184,13 +185,16 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
                 if (node instanceof Element) {
                     Element ele = (Element) node;
                     if (delegate.isDefaultNamespace(ele)) {
+                        // 解析默认名字空间的标签
                         parseDefaultElement(ele, delegate);
                     } else {
+                        // 解析自定义标签
                         delegate.parseCustomElement(ele);
                     }
                 }
             }
         } else {
+            // 解析自定义标签
             delegate.parseCustomElement(root);
         }
     }
