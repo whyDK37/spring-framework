@@ -2,6 +2,7 @@ package c2;
 
 import c0.MyTestBean;
 import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.parsing.*;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.core.io.ClassPathResource;
@@ -14,6 +15,28 @@ public class BeanFactoryTest2 {
         //
         DefaultListableBeanFactory bf = new DefaultListableBeanFactory();
         XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(bf);
+        reader.setEventListener(new ReaderEventListener(){
+
+            @Override
+            public void defaultsRegistered(DefaultsDefinition defaultsDefinition) {
+
+            }
+
+            @Override
+            public void componentRegistered(ComponentDefinition componentDefinition) {
+
+            }
+
+            @Override
+            public void aliasRegistered(AliasDefinition aliasDefinition) {
+
+            }
+
+            @Override
+            public void importProcessed(ImportDefinition importDefinition) {
+
+            }
+        });
         reader.loadBeanDefinitions(new ClassPathResource("c2/beanFactory.xml"));
 
         MyTestBean myTestBean = bf.getBean("myTestBean", MyTestBean.class);

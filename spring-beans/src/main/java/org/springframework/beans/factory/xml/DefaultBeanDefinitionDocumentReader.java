@@ -23,6 +23,7 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.parsing.ReaderEventListener;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -254,13 +255,18 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
             }
         } else {
             // No URL -> considering resource location as relative to the current file.
+            // 如果是相对地址，可以计算出绝对地址
             try {
                 int importCount;
+                // resource 有多个实现类，如vfsresource,FileSystemResource 等。
+                //而每个resource 的createRelative方法都不一样，这里先用之类的方法尝试解析
                 Resource relativeResource = getReaderContext().getResource().createRelative(location);
                 if (relativeResource.exists()) {
+                    // 调用 "XmlBeanDefinitionReader.loadBeanDefinition" 方法加载 import 资源
                     importCount = getReaderContext().getReader().loadBeanDefinitions(relativeResource);
                     actualResources.add(relativeResource);
                 } else {
+                    // 如果解析不成功，则使用默认的解析器 ResourcePatternResolver 进行解析
                     String baseLocation = getReaderContext().getResource().getURL().toString();
                     importCount = getReaderContext().getReader().loadBeanDefinitions(
                             StringUtils.applyRelativePath(baseLocation, location), actualResources);
@@ -275,6 +281,7 @@ public class DefaultBeanDefinitionDocumentReader implements BeanDefinitionDocume
                         ele, ex);
             }
         }
+        //解析到 resource 后，通知 XmlBeanDefinitionReader 中的 ReaderEventListener "
         Resource[] actResArray = actualResources.toArray(new Resource[actualResources.size()]);
         getReaderContext().fireImportProcessed(location, actResArray, extractSource(ele));
     }
