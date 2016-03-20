@@ -1021,6 +1021,7 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	 * @throws BeanDefinitionValidationException in case of validation failure
 	 */
 	protected void prepareMethodOverride(MethodOverride mo) throws BeanDefinitionValidationException {
+		// 获取 override 对应类中的方法个数
 		int count = ClassUtils.getMethodCountForName(getBeanClass(), mo.getMethodName());
 		if (count == 0) {
 			throw new BeanDefinitionValidationException(
@@ -1029,6 +1030,8 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 		}
 		else if (count == 1) {
 			// Mark override as not overloaded, to avoid the overhead of arg type checking.
+			// 相同方法名的方法中有一个，所以方法没有被重载，那么在后续调用的时候就可以直接使用找到的方法，而不需要进行方法参数的匹配验证。
+			// 而且还可以提前对方法的存在性进行验证，可谓一箭双雕。
 			mo.setOverloaded(false);
 		}
 	}
