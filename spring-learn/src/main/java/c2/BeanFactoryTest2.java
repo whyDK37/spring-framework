@@ -7,6 +7,8 @@ import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.core.io.ClassPathResource;
 
+import java.util.Set;
+
 /**
  * Created by whydk on 2016/3/10.
  */
@@ -53,5 +55,7 @@ public class BeanFactoryTest2 {
         System.out.println(bf.getBeanDefinitionNames());
 
 
+        Set emails = bf.getBean("emails",Set.class);
+        System.out.println(emails);
     }
 }

@@ -70,9 +70,11 @@ public abstract class AbstractBeanDefinitionParser implements BeanDefinitionPars
 				if (StringUtils.hasLength(name)) {
 					aliases = StringUtils.trimArrayElements(StringUtils.commaDelimitedListToStringArray(name));
 				}
+				// 将 AbstractBeanDefinition 转化为 BeanDefinitionHolder，并注册
 				BeanDefinitionHolder holder = new BeanDefinitionHolder(definition, id, aliases);
 				registerBeanDefinition(holder, parserContext.getRegistry());
 				if (shouldFireEvents()) {
+					// 需要通知的监听器
 					BeanComponentDefinition componentDefinition = new BeanComponentDefinition(holder);
 					postProcessComponentDefinition(componentDefinition);
 					parserContext.registerComponent(componentDefinition);

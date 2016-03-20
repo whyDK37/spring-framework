@@ -115,6 +115,7 @@ public class DefaultNamespaceHandlerResolver implements NamespaceHandlerResolver
 		if (handlerOrClassName == null) {
 			return null;
 		}
+//		刚读取的 NamespaceHandler 只是实现类的名称，在第一次使用的时候才会实例化。
 		else if (handlerOrClassName instanceof NamespaceHandler) {
 			return (NamespaceHandler) handlerOrClassName;
 		}
@@ -144,6 +145,7 @@ public class DefaultNamespaceHandlerResolver implements NamespaceHandlerResolver
 
 	/**
 	 * Load the specified NamespaceHandler mappings lazily.
+	 * 刚读取的 NamespaceHandler 只是实现类的名称，在第一次使用的时候才会实例化。
 	 */
 	private Map<String, Object> getHandlerMappings() {
 		if (this.handlerMappings == null) {
