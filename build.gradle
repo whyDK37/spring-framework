@@ -856,6 +856,10 @@ project("spring-learn") {
 		compile(project(":spring-orm"))  // for JPA exception translation support
 		compile(project(":spring-tx"))  // for JPA, @Transactional support
 		compile(project(":spring-core"))  // for CodeStyleAspect
+		compile("org.hsqldb:hsqldb:2.3.3")
+		compile("commons-dbcp:commons-dbcp:1.4")
+		compile("c3p0:c3p0:0.9.1.2")
+		compile("junit:junit:${junitVersion}")
 		testCompile(project(":spring-test"))
 		testCompile("javax.mail:mail:1.4.7")
 	}
