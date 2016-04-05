@@ -859,6 +859,8 @@ project("spring-learn") {
 		compile("org.hsqldb:hsqldb:2.3.3")
 		compile("commons-dbcp:commons-dbcp:1.4")
 		compile("c3p0:c3p0:0.9.1.2")
+		compile("org.aspectj:aspectjweaver:${aspectjVersion}")
+		compile "mysql:mysql-connector-java:5.1.34"
 		compile("junit:junit:${junitVersion}")
 		testCompile(project(":spring-test"))
 		testCompile("javax.mail:mail:1.4.7")
