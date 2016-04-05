@@ -552,11 +552,22 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		if (earlySingletonExposure) {
 			Object earlySingletonReference = getSingleton(beanName, false);
 			// earlySingletonReference 只有检查到循环依赖的时候才会不为空
+			//	判断点1，
+			// 首先确定这个对象能从earlySingletonObjects中取出对象来，
+			// 经过上面的分析，我们知道，在正常情况下，此对象为null，即不存在循环检测。而在循环引用中，此对象能够被取出来。
 			if (earlySingletonReference != null) {
 				// exposedObject 没有在初始化方法中被改变，也就是没有增强
+				// 判断点2，
+				// 再判断这个对象和当前通过beanPostProcessor处理过的对象是否相同，如果相同，表示对象没有经过修改，
+				// 即A=A-，那么循环引用成立。无需处理
 				if (exposedObject == bean) {
 					exposedObject = earlySingletonReference;
 				}
+				// 判断点3，
+				// 判断当前对象A是否被其他对象所依赖，在循环引用中，已经处理了A和B，那么在依赖表中，
+				// 即在属性dependentBeanMap和dependenciesForBeanMap中。其中A->B表示A依赖于B，B->A表示B依赖于A。
+				// 那么在dependentBeanMap中就会出现两个entry，分别为A->B和B->A。这里A依赖于A，那么表示A已经被依赖，
+				// 则进入进一步检测中。在检测中，将取得一个A的被依赖列表中的bean已经被创建的对象列表值。
 				else if (!this.allowRawInjectionDespiteWrapping && hasDependentBean(beanName)) {
 					String[] dependentBeans = getDependentBeans(beanName);
 					Set<String> actualDependentBeans = new LinkedHashSet<String>(dependentBeans.length);
@@ -570,16 +581,19 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 					/*
 					因为 bean 创建后，基依赖的 bean 一定是创建的。
 					actualDependentBeans 不为空表示当前 bean 创建后，其依赖的 bean 并没有全部创建，也就是存在循环依赖。
-
+					判断点4，
+					如果被依赖对象列表不为空，则表示出现循环引用。因为按照创建规则，如果A->B，则必须先创建B，而B->A，
+					则必须先创建A。在这里，A被B依赖，就要求A必须在B之前被创建，而B又被A依赖，又要求A必须在B之前被创建。
+					这创建的两个对象必须满足一致才可以。即在A->B中的两个对象，必须和B->A的两个对象，互相一致才可以，否则就不是循环引用。
 					 */
 					if (!actualDependentBeans.isEmpty()) {
 						throw new BeanCurrentlyInCreationException(beanName,
 								"Bean with name '" + beanName + "' has been injected into other beans [" +
-								StringUtils.collectionToCommaDelimitedString(actualDependentBeans) +
-								"] in its raw version as part of a circular reference, but has eventually been " +
-								"wrapped. This means that said other beans do not use the final version of the " +
-								"bean. This is often the result of over-eager type matching - consider using " +
-								"'getBeanNamesOfType' with the 'allowEagerInit' flag turned off, for example.");
+										StringUtils.collectionToCommaDelimitedString(actualDependentBeans) +
+										"] in its raw version as part of a circular reference, but has eventually been " +
+										"wrapped. This means that said other beans do not use the final version of the " +
+										"bean. This is often the result of over-eager type matching - consider using " +
+										"'getBeanNamesOfType' with the 'allowEagerInit' flag turned off, for example.");
 					}
 				}
 			}

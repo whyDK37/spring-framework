@@ -31,14 +31,9 @@ http://www.springframework.org/schema/jee http://www.springframework.org/schema/
 http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms-3.0.xsd"
        default-lazy-init="false">
 
-    <!--<bean id="testA" class="c5.TestA" p:testB-ref="testB">-->
-        <!--<meta key="m1" value="meta data"/>-->
-    <!--</bean>-->
-    <!--<bean id="testB" class="c5.TestB" p:testA-ref="testA"/>-->
-
-    <bean id="testA" class="c5.TestA" p:testB-ref="testB">
+    <bean id="testA" class="c5.TestA" c:testB-ref="testB">
         <meta key="m1" value="meta data"/>
     </bean>
-    <bean id="testB" class="c5.TestB" p:testA-ref="testA"/>
+    <bean id="testB" class="c5.TestB" c:testA-ref="testA"/>
 
 </beans>
