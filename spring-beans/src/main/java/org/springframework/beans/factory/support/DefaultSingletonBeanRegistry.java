@@ -85,13 +85,15 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 
 	/** Cache of singleton factories: bean name --> ObjectFactory
 	 * 用于保存 beanName 和 创建 bean 的工厂之间的关系。
+	 * 用于存储在spring内部所使用的beanName->对象工厂的引用，一旦最终对象被创建(通过objectFactory.getObject())，此引用信息将删除
 	 * */
 	private final Map<String, ObjectFactory<?>> singletonFactories = new HashMap<String, ObjectFactory<?>>(16);
 
 	/**
 	 *  Cache of early singleton objects: bean name --> bean instance
-	 * 与singletonObject的不同之处是，当一个单例bean被放到里面后，当bean还在创建的过程中就可以通过getObject方法获取到对象
+	 * 与singletonObject的不同之处是，当一个单例bean被放到里面后，当bean还在创建的过程中就可以通过getObject方法获取到对象，
 	 * 目的是解决循环依赖。
+	 * 用于存储在创建Bean早期对创建的原始bean的一个引用，注意这里是原始bean，即使用工厂方法或构造方法创建出来的对象，一旦对象最终创建好，此引用信息将删除
 	 * */
 	private final Map<String, Object> earlySingletonObjects = new HashMap<String, Object>(16);
 
@@ -222,7 +224,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 				if (this.singletonsCurrentlyInDestruction) {
 					throw new BeanCreationNotAllowedException(beanName,
 							"Singleton bean creation not allowed while the singletons of this factory are in destruction " +
-							"(Do not request a bean from a BeanFactory in a destroy method implementation!)");
+									"(Do not request a bean from a BeanFactory in a destroy method implementation!)");
 				}
 				if (logger.isDebugEnabled()) {
 					logger.debug("Creating shared instance of singleton bean '" + beanName + "'");
