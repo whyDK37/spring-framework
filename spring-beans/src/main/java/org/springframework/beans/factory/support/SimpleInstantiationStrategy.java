@@ -57,6 +57,7 @@ public class SimpleInstantiationStrategy implements InstantiationStrategy {
 
 	public Object instantiate(RootBeanDefinition beanDefinition, String beanName, BeanFactory owner) {
 		// Don't override the class with CGLIB if no overrides.
+		// 如果没有 override method ，直接反射就可以。
 		if (beanDefinition.getMethodOverrides().isEmpty()) {
 			Constructor<?> constructorToUse;
 			synchronized (beanDefinition.constructorArgumentLock) {
@@ -88,6 +89,7 @@ public class SimpleInstantiationStrategy implements InstantiationStrategy {
 		}
 		else {
 			// Must generate CGLIB subclass.
+			//如果有 override method ，必须使用cglib进行动态代理。
 			return instantiateWithMethodInjection(beanDefinition, beanName, owner);
 		}
 	}

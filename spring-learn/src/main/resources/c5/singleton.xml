@@ -39,6 +39,8 @@ http://www.springframework.org/schema/jms http://www.springframework.org/schema/
     <bean id="testA" class="c5.TestA" p:testB-ref="testB">
         <meta key="m1" value="meta data"/>
     </bean>
-    <bean id="testB" class="c5.TestB" p:testA-ref="testA"/>
+    <bean id="testB" class="c5.TestB" p:testA-ref="testA" scope="prototype"/>
+
+    <!--<bean id="no" class="foo.No"/>-->
 
 </beans>

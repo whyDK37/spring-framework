@@ -486,7 +486,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	protected Object doCreateBean(final String beanName, final RootBeanDefinition mbd, final Object[] args) {
 		// Instantiate the bean.
 		BeanWrapper instanceWrapper = null;
-		// 如果是单例，需要先清除缓存
+		// 如果是单例，需要先清除 factoryBean 缓存
 		if (mbd.isSingleton()) {
 			instanceWrapper = this.factoryBeanInstanceCache.remove(beanName);
 		}
@@ -988,7 +988,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	 */
 	protected BeanWrapper createBeanInstance(String beanName, RootBeanDefinition mbd, Object[] args) {
 		// Make sure bean class is actually resolved at this point.
-		// 解析 class
+		// 解析 class，这里确保类一定存在，否则会抛出异常。
 		Class<?> beanClass = resolveBeanClass(mbd, beanName);
 
 		if (beanClass != null && !Modifier.isPublic(beanClass.getModifiers()) && !mbd.isNonPublicAccessAllowed()) {
@@ -1006,6 +1006,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		boolean autowireNecessary = false;
 		if (args == null) {
 			synchronized (mbd.constructorArgumentLock) {
+				// 一个类有多个构造函数，每个构造函数参数不同，所以调用前需要通过参数确定构造函数或工厂方法
 				// 解析构造函数是个比较消耗性能的过程，所以 spring 采用了缓存，
 				// 如果已经解析过，则不需要重复解析，直接从 RootBeanDefinition 中获取即可。
 				if (mbd.resolvedConstructorOrFactoryMethod != null) {
@@ -1014,6 +1015,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 				}
 			}
 		}
+		//如果已经解析过，则使用已经解释好的构造函数
 		if (resolved) {
 			if (autowireNecessary) {
 				// 构造函数自动注入
@@ -1191,7 +1193,9 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			pvs = newPvs;
 		}
 
+		// 后处理器已经初始化
 		boolean hasInstAwareBpps = hasInstantiationAwareBeanPostProcessors();
+		// 需要依赖检查
 		boolean needsDepCheck = (mbd.getDependencyCheck() != RootBeanDefinition.DEPENDENCY_CHECK_NONE);
 
 		if (hasInstAwareBpps || needsDepCheck) {
