@@ -11,7 +11,7 @@ public class JdbcTxTest {
         ApplicationContext ctx = new ClassPathXmlApplicationContext("jdbc-tx.xml", JdbcTxTest.class);
         final ActorService actorService = (ActorService) ctx.getBean("actorService");
 
-        Thread get = new Thread(new Runnable() {
+        final Thread get = new Thread(new Runnable() {
             @Override
             public void run() {
                 while (true) {

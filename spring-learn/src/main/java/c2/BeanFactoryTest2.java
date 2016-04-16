@@ -45,7 +45,7 @@ public class BeanFactoryTest2 {
         System.out.println(myTestBean.getTeststr());
 
         BeanDefinition beanDefinition = bf.getBeanDefinition("myTestBean");
-        System.out.println(beanDefinition.getClass().toGenericString());
+        System.out.println(beanDefinition.getClass().getCanonicalName());
         System.out.println(beanDefinition.toString());
         System.out.println("beanDefinition.getAttribute(\"m1\")="+beanDefinition.getAttribute("m1"));
         System.out.println("beanDefinition.isSingleton()="+beanDefinition.isSingleton());
