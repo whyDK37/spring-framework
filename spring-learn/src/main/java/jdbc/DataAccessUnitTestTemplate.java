@@ -49,7 +49,7 @@ public class DataAccessUnitTestTemplate {
         reader.loadBeanDefinitions(new ClassPathResource("jdbc/jdbc.xml"));
 
         db = bf.getBean("dataSource", SimpleDriverDataSource.class);
-
+        System.out.println("data source : " + db);
 
         jdbcTemplate = new JdbcTemplate(db);
         namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(db);
