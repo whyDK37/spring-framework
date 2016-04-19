@@ -857,6 +857,7 @@ project("spring-learn") {
 		compile(project(":spring-tx"))  // for JPA, @Transactional support
 		compile(project(":spring-core"))  // for CodeStyleAspect
 		compile("org.hsqldb:hsqldb:2.3.3")
+		compile 'com.h2database:h2:1.4.187'
 		compile("commons-dbcp:commons-dbcp:1.4")
 		compile("c3p0:c3p0:0.9.1.2")
 		compile("org.aspectj:aspectjweaver:${aspectjVersion}")
