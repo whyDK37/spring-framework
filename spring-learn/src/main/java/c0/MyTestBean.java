@@ -22,4 +22,8 @@ public class MyTestBean {
     }
 
 
+    public void test(){
+        System.out.println(teststr);
+    }
+
 }
