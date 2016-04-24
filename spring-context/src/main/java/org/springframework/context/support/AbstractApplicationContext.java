@@ -445,40 +445,54 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	public void refresh() throws BeansException, IllegalStateException {
 		synchronized (this.startupShutdownMonitor) {
 			// Prepare this context for refreshing.
+			// 准备刷新的上下文环境
 			prepareRefresh();
 
 			// Tell the subclass to refresh the internal bean factory.
+			// 初始化 beanFactory ，进行xml文件读取。
+			// 这一步完成复用 beanFactory 的配置文件读取和其它功能。
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 
 			// Prepare the bean factory for use in this context.
+			// 对 beanFactory 进行填充
+			// 大家熟悉的 Qualifier , Autowired 就是在这一步完成的。
 			prepareBeanFactory(beanFactory);
 
 			try {
 				// Allows post-processing of the bean factory in context subclasses.
+				// 预留方法，由子类实现=额外的处理
 				postProcessBeanFactory(beanFactory);
 
 				// Invoke factory processors registered as beans in the context.
+				// 激活各种 beanFactory 处理器
 				invokeBeanFactoryPostProcessors(beanFactory);
 
 				// Register bean processors that intercept bean creation.
+				// 注册拦截 bean 创建的 bean 处理器，这时只是注册，真正的调用是在 getBean 时。
 				registerBeanPostProcessors(beanFactory);
 
 				// Initialize message source for this context.
+				// 为上下文初始化 message 源
 				initMessageSource();
 
 				// Initialize event multicaster for this context.
+				// 初始化应用消息广播器，并放入 applicationEventMulticaster bean 中
 				initApplicationEventMulticaster();
 
 				// Initialize other special beans in specific context subclasses.
+				// 预留方法，由子类初始化其它 bean
 				onRefresh();
 
 				// Check for listener beans and register them.
+				// 在所有注册 bean 中查找 Listener bean ,注册到消息广播器中
 				registerListeners();
 
 				// Instantiate all remaining (non-lazy-init) singletons.
+				// 初始化剩下的单例（非 lazy init）
 				finishBeanFactoryInitialization(beanFactory);
 
 				// Last step: publish corresponding event.
+				// 完成刷新过程，通知生命周期处理器 LifecycleProcessor 刷新过程，同时发出 ContextRefreshedEvent 通知监听者
 				finishRefresh();
 			}
 
@@ -516,10 +530,12 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		}
 
 		// Initialize any placeholder property sources in the context environment
+		// 预留方法，用户可以根据自身需要重写该方法，
 		initPropertySources();
 
 		// Validate that all properties marked as required are resolvable
 		// see ConfigurablePropertyResolver#setRequiredProperties
+		// 验证需要的属性文件是否已经放入环境中
 		getEnvironment().validateRequiredProperties();
 	}
 
@@ -539,6 +555,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * @see #getBeanFactory()
 	 */
 	protected ConfigurableListableBeanFactory obtainFreshBeanFactory() {
+		// 初始化 BeanFactory 并进行xml读取，并将得到的beanFactory记录在当前 context中。
 		refreshBeanFactory();
 		ConfigurableListableBeanFactory beanFactory = getBeanFactory();
 		if (logger.isDebugEnabled()) {

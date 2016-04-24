@@ -23,7 +23,7 @@ public class EnvironmentTest {
         @Override
         protected void initPropertySources() {
             super.initPropertySources();
-            this.getEnvironment().setRequiredProperties("why");
+//            this.getEnvironment().setRequiredProperties("why");
         }
     }
 }

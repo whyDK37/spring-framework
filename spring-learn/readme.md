@@ -1,4 +1,8 @@
 
+#c6 容器的功能扩展
+   ApplicationContext 是对 BeanFactory的扩展。
+
+
 #c7 aop
    calc包  spring aop introduction,可以让一个接口实现动态的实现其它接口。
          通过这种方式，我们可以动态的为bean增加状态，如使用 DeclareParents 扩展 bean功能，再通过 aop 切面修改或监控状态。
