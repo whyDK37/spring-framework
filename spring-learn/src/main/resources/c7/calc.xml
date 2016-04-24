@@ -33,9 +33,11 @@ http://www.springframework.org/schema/jms http://www.springframework.org/schema/
 
     <aop:aspectj-autoproxy />
 
-       <!--<bean class="c7.AspectJ4TestBean"/>-->
-       <!--<bean class="c7.AspectJ4TestBean1"/>-->
-       <bean class="c7.AspectJ4Logging"/>
+    <bean class="c7.calc.CalculatorIntroduction"/>
 
-       <bean id="testBean" class="c0.MyTestBean" p:teststr="test aspect"/>
+    <bean class="c7.calc.MaxCalculatorImpl" id="maxCalculator"/>
+    <bean class="c7.calc.MinCalculatorImpl" id="minCalculator"/>
+
+
+    <bean class="c7.calc.ArithmeticCalulatorImpl" id="arithmeticCalulator"/>
 </beans>

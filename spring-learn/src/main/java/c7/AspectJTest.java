@@ -14,14 +14,15 @@ public class AspectJTest {
     public static void main(String[] args) {
 
         //
-        DefaultListableBeanFactory bf = new DefaultListableBeanFactory();
-        XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(bf);
-        reader.loadBeanDefinitions(new ClassPathResource("c7/aspect.xml"));
+//        DefaultListableBeanFactory bf = new DefaultListableBeanFactory();
+//        XmlBeanDefinitionReader reader = new XmlBeanDefinitionReader(bf);
+//        reader.loadBeanDefinitions(new ClassPathResource("c7/aspect.xml"));
 
         ApplicationContext ac = new ClassPathXmlApplicationContext("c7/aspect.xml");
 
         MyTestBean myTestBean = ac.getBean("testBean", MyTestBean.class);
         myTestBean.test();
+        myTestBean.logging();
 
     }
 }

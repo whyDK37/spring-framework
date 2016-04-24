@@ -22,8 +22,15 @@ public class MyTestBean {
     }
 
 
-    public void test(){
+    public String test(){
         System.out.println(teststr);
+        return teststr;
+    }
+
+    @LoggingRequired
+    public String logging(){
+        System.out.println(teststr+" logging");
+        return teststr;
     }
 
 }
