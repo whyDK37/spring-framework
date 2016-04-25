@@ -17,5 +17,8 @@ public class Test {
         MaxCalculator maxCalculator = (MaxCalculator)arithmeticCalulator;
         System.out.println(maxCalculator.max(1.2,3));
 
+        MinCalculator minCalculator = (MinCalculator)arithmeticCalulator;
+        System.out.println(minCalculator.min(1.2,3));
+
     }
 }
