@@ -17,8 +17,8 @@ public class AspectJ4Logging {
     public void logging() {}
 
     /**
-     * spring ¹ÜÀíµÄËùÓĞµÄÀà£¬Èç¹û·½·¨ÓĞ LoggingRequired ¾Í»á±»aopÀ¹½Ø¡£
-     * ÕâÊÇÒ»ÖÖ»ùÓÚ×Ô¶¨Òå×¢½âµÄÀ¹½Ø·½Ê½
+     * spring ç®¡ç†çš„æ‰€æœ‰çš„ç±»ï¼Œå¦‚æœæ–¹æ³•æœ‰ LoggingRequired å°±ä¼šè¢«aopæ‹¦æˆªã€‚
+     * è¿™æ˜¯ä¸€ç§åŸºäºè‡ªå®šä¹‰æ³¨è§£çš„æ‹¦æˆªæ–¹å¼
      */
 //    @Before("logging() && @annotation(logging)")
 //    @Before("logging() && @annotation(c0.LoggingRequired)")
