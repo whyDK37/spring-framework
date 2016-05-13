@@ -21,6 +21,7 @@ public class AspectJTest {
         ApplicationContext ac = new ClassPathXmlApplicationContext("c7/aspect.xml");
 
         MyTestBean myTestBean = ac.getBean("testBean", MyTestBean.class);
+        System.out.println(myTestBean);
         myTestBean.test();
         myTestBean.logging();
 
