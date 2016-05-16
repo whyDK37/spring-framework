@@ -321,6 +321,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyConfig
 		if (bean != null) {
 			Object cacheKey = getCacheKey(bean.getClass(), beanName);
 			if (!this.earlyProxyReferences.containsKey(cacheKey)) {
+				// 如果它适合被代理，则需要封装指定bean.
 				return wrapIfNecessary(bean, beanName, cacheKey);
 			}
 		}
@@ -346,9 +347,11 @@ public abstract class AbstractAutoProxyCreator extends ProxyConfig
 	 * @return a proxy wrapping the bean, or the raw bean instance as-is
 	 */
 	protected Object wrapIfNecessary(Object bean, String beanName, Object cacheKey) {
+		// 如果已经处理过
 		if (beanName != null && this.targetSourcedBeans.containsKey(beanName)) {
 			return bean;
 		}
+		// 无需增强
 		if (Boolean.FALSE.equals(this.advisedBeans.get(cacheKey))) {
 			return bean;
 		}
