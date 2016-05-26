@@ -33,9 +33,13 @@ http://www.springframework.org/schema/jms http://www.springframework.org/schema/
 
     <aop:aspectj-autoproxy proxy-target-class="true"/>
 
-       <!--<bean class="c7.AspectJ4TestBean"/>-->
-       <!--<bean class="c7.AspectJ4TestBean1"/>-->
-       <bean class="c7.AspectJ4Logging"/>
+    <!--<bean class="c7.AspectJ4TestBean"/>-->
+    <!--<bean class="c7.AspectJ4TestBean1"/>-->
+    <bean class="c7.AspectJ4Logging"/>
 
-       <bean id="testBean" class="c0.MyTestBean" p:teststr="test aspect"/>
+    <bean id="testBean" class="c0.MyTestBean" p:teststr="test aspect">
+        <property name="myTestBean2">
+            <bean class="c0.MyTestBean2" p:teststr="test2"/>
+        </property>
+    </bean>
 </beans>
