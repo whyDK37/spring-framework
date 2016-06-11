@@ -5,6 +5,7 @@ package c0;
  */
 public class MyTestBean {
 
+    private MyTestBean2 myTestBean2;
     public MyTestBean(){
 
     }
@@ -29,8 +30,16 @@ public class MyTestBean {
 
     @LoggingRequired
     public String logging(){
-        System.out.println(teststr+" logging");
+        System.out.println(teststr+" logging(1)");
+        myTestBean2.logging();
         return teststr;
     }
 
+    public MyTestBean2 getMyTestBean2() {
+        return myTestBean2;
+    }
+
+    public void setMyTestBean2(MyTestBean2 myTestBean2) {
+        this.myTestBean2 = myTestBean2;
+    }
 }

@@ -107,6 +107,8 @@ public abstract class AopConfigUtils {
 
 	private static BeanDefinition registerOrEscalateApcAsRequired(Class cls, BeanDefinitionRegistry registry, Object source) {
 		Assert.notNull(registry, "BeanDefinitionRegistry must not be null");
+		// 如果存在自动代理创建器，并且与当前创建的不是同一个类，需要根据 findPriorityForClass 返回的优先级判断使用哪一个。
+		// findPriorityForClass 方法使用 APC_PRIORITY_LIST 来判断优先级
 		if (registry.containsBeanDefinition(AUTO_PROXY_CREATOR_BEAN_NAME)) {
 			BeanDefinition apcDefinition = registry.getBeanDefinition(AUTO_PROXY_CREATOR_BEAN_NAME);
 			if (!cls.getName().equals(apcDefinition.getBeanClassName())) {
@@ -116,6 +118,7 @@ public abstract class AopConfigUtils {
 					apcDefinition.setBeanClassName(cls.getName());
 				}
 			}
+			// 如果已经存在而且与将要创建的一致，则无需创建
 			return null;
 		}
 		RootBeanDefinition beanDefinition = new RootBeanDefinition(cls);

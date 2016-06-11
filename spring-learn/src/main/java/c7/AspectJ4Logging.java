@@ -2,9 +2,8 @@ package c7;
 
 import c0.LoggingRequired;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.*;
 import org.springframework.core.annotation.Order;
 
 /**
@@ -23,7 +22,33 @@ public class AspectJ4Logging {
 //    @Before("logging() && @annotation(logging)")
 //    @Before("logging() && @annotation(c0.LoggingRequired)")
     @Before("logging()")
-    public void beforeTest() {
+    public void beforeTest(JoinPoint joinPoint) {
         System.out.println("before test do logging");
+    }
+
+    @Around("logging()")
+    public void aroundTest(ProceedingJoinPoint proceedingJoinPoint) {
+        System.out.println("Around test do logging...");
+        try {
+            proceedingJoinPoint.proceed();
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+        }
+        System.out.println("Around test do logging... done");
+    }
+
+    @After("logging()")
+    public void afterTest(JoinPoint joinPoint) {
+        System.out.println("After test do logging");
+    }
+
+    @AfterReturning("logging()")
+    public void afterReturnTest(){
+        System.out.println("after return ");
+    }
+
+    @AfterThrowing("logging()")
+    public void doRecoveryActions() {
+        // ...
     }
 }
