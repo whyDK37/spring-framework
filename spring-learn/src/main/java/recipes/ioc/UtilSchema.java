@@ -39,6 +39,8 @@ public class UtilSchema {
         System.out.println("property path:");
         System.out.println(ctx.getBean("utilSchema.age"));
         System.out.println(ctx.getBean("age"));
+
+        System.out.println("done.");
     }
 
     private static List<Integer> print(List<Integer> list) {
