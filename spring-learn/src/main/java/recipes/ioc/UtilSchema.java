@@ -15,7 +15,7 @@ public class UtilSchema {
     private int age;
     private String name;
     protected UtilSchema empty;
-    public static final String staticfield = "static field";
+    public static final String staticfield = "static field.";
 
     public UtilSchema(){}
 
