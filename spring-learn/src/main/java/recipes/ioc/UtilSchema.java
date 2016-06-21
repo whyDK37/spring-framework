@@ -40,6 +40,7 @@ public class UtilSchema {
         System.out.println(ctx.getBean("utilSchema.age"));
         System.out.println(ctx.getBean("age"));
 
+
         System.out.println("done.");
     }
 
