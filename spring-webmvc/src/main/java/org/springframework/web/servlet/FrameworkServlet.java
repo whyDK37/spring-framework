@@ -488,10 +488,12 @@ public abstract class FrameworkServlet extends HttpServletBean {
 	 * @see #setContextConfigLocation
 	 */
 	protected WebApplicationContext initWebApplicationContext() {
+		// rootContext is created in ContextLoaderListener
 		WebApplicationContext rootContext =
 				WebApplicationContextUtils.getWebApplicationContext(getServletContext());
 		WebApplicationContext wac = null;
 
+		// 这一步是为了校验当前实例是否是通过构造函数创建的，如果是通过构造函数创建的，webApplicationContext有可能不为空
 		if (this.webApplicationContext != null) {
 			// A context instance was injected at construction time -> use it
 			wac = this.webApplicationContext;
@@ -932,13 +934,15 @@ public abstract class FrameworkServlet extends HttpServletBean {
 	 */
 	protected final void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
+		// recode request start time
 		long startTime = System.currentTimeMillis();
 		Throwable failureCause = null;
 
+		// expose current localResolver and request to localContext
 		LocaleContext previousLocaleContext = LocaleContextHolder.getLocaleContext();
 		LocaleContext localeContext = buildLocaleContext(request);
 
+		// expose current requestAttribute to current thread
 		RequestAttributes previousAttributes = RequestContextHolder.getRequestAttributes();
 		ServletRequestAttributes requestAttributes = buildRequestAttributes(request, response, previousAttributes);
 

@@ -899,12 +899,14 @@ public class DispatcherServlet extends FrameworkServlet {
 			Exception dispatchException = null;
 
 			try {
+				// if multipart request ,transform to MultipartHttpServletRequest
 				processedRequest = checkMultipart(request);
 				multipartRequestParsed = (processedRequest != request);
 
 				// Determine handler for the current request.
 				mappedHandler = getHandler(processedRequest, false);
 				if (mappedHandler == null || mappedHandler.getHandler() == null) {
+					// if no mappedHandler, report error message
 					noHandlerFound(processedRequest, response);
 					return;
 				}
@@ -936,7 +938,9 @@ public class DispatcherServlet extends FrameworkServlet {
 					return;
 				}
 
+				// 视图名称转换，应用于需要前缀后缀的情况。
 				applyDefaultViewName(request, mv);
+
 				mappedHandler.applyPostHandle(processedRequest, response, mv);
 			}
 			catch (Exception ex) {

@@ -445,54 +445,54 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	public void refresh() throws BeansException, IllegalStateException {
 		synchronized (this.startupShutdownMonitor) {
 			// Prepare this context for refreshing.
-			// ×¼±¸Ë¢ĞÂµÄÉÏÏÂÎÄ»·¾³
+			// å‡†å¤‡åˆ·æ–°çš„ä¸Šä¸‹æ–‡ç¯å¢ƒ
 			prepareRefresh();
 
 			// Tell the subclass to refresh the internal bean factory.
-			// ³õÊ¼»¯ beanFactory £¬½øĞĞxmlÎÄ¼ş¶ÁÈ¡¡£
-			// ÕâÒ»²½Íê³É¸´ÓÃ beanFactory µÄÅäÖÃÎÄ¼ş¶ÁÈ¡ºÍÆäËü¹¦ÄÜ¡£
+			// åˆå§‹åŒ– beanFactory ï¼Œè¿›è¡Œxmlæ–‡ä»¶è¯»å–ã€‚
+			// è¿™ä¸€æ­¥å®Œæˆå¤ç”¨ beanFactory çš„é…ç½®æ–‡ä»¶è¯»å–å’Œå…¶å®ƒåŠŸèƒ½ã€‚
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 
 			// Prepare the bean factory for use in this context.
-			// ¶Ô beanFactory ½øĞĞÌî³ä
-			// ´ó¼ÒÊìÏ¤µÄ Qualifier , Autowired ¾ÍÊÇÔÚÕâÒ»²½Íê³ÉµÄ¡£
+			// å¯¹ beanFactory è¿›è¡Œå¡«å……
+			// å¤§å®¶ç†Ÿæ‚‰çš„ Qualifier , Autowired å°±æ˜¯åœ¨è¿™ä¸€æ­¥å®Œæˆçš„ã€‚
 			prepareBeanFactory(beanFactory);
 
 			try {
 				// Allows post-processing of the bean factory in context subclasses.
-				// Ô¤Áô·½·¨£¬ÓÉ×ÓÀàÊµÏÖ=¶îÍâµÄ´¦Àí
+				// é¢„ç•™æ–¹æ³•ï¼Œç”±å­ç±»å®ç°=é¢å¤–çš„å¤„ç†
 				postProcessBeanFactory(beanFactory);
 
 				// Invoke factory processors registered as beans in the context.
-				// ¼¤»î¸÷ÖÖ beanFactory ´¦ÀíÆ÷
+				// æ¿€æ´»å„ç§ beanFactory å¤„ç†å™¨
 				invokeBeanFactoryPostProcessors(beanFactory);
 
 				// Register bean processors that intercept bean creation.
-				// ×¢²áÀ¹½Ø bean ´´½¨µÄ bean ´¦ÀíÆ÷£¬ÕâÊ±Ö»ÊÇ×¢²á£¬ÕæÕıµÄµ÷ÓÃÊÇÔÚ getBean Ê±¡£
+				// æ³¨å†Œæ‹¦æˆª bean åˆ›å»ºçš„ bean å¤„ç†å™¨ï¼Œè¿™æ—¶åªæ˜¯æ³¨å†Œï¼ŒçœŸæ­£çš„è°ƒç”¨æ˜¯åœ¨ getBean æ—¶ã€‚
 				registerBeanPostProcessors(beanFactory);
 
 				// Initialize message source for this context.
-				// ÎªÉÏÏÂÎÄ³õÊ¼»¯ ÏûÏ¢×ÊÔ´
+				// ä¸ºä¸Šä¸‹æ–‡åˆå§‹åŒ– æ¶ˆæ¯èµ„æº
 				initMessageSource();
 
 				// Initialize event multicaster for this context.
-				// ³õÊ¼»¯Ó¦ÓÃÏûÏ¢¹ã²¥Æ÷£¬²¢·ÅÈë applicationEventMulticaster bean ÖĞ
+				// åˆå§‹åŒ–åº”ç”¨æ¶ˆæ¯å¹¿æ’­å™¨ï¼Œå¹¶æ”¾å…¥ applicationEventMulticaster bean ä¸­
 				initApplicationEventMulticaster();
 
 				// Initialize other special beans in specific context subclasses.
-				// Ô¤Áô·½·¨£¬ÓÉ×ÓÀà³õÊ¼»¯ÆäËü bean
+				// é¢„ç•™æ–¹æ³•ï¼Œç”±å­ç±»åˆå§‹åŒ–å…¶å®ƒ bean
 				onRefresh();
 
 				// Check for listener beans and register them.
-				// ÔÚËùÓĞ×¢²á bean ÖĞ²éÕÒ Listener bean ,×¢²áµ½ÏûÏ¢¹ã²¥Æ÷ÖĞ
+				// åœ¨æ‰€æœ‰æ³¨å†Œ bean ä¸­æŸ¥æ‰¾ Listener bean ,æ³¨å†Œåˆ°æ¶ˆæ¯å¹¿æ’­å™¨ä¸­
 				registerListeners();
 
 				// Instantiate all remaining (non-lazy-init) singletons.
-				// ³õÊ¼»¯Ê£ÏÂµÄµ¥Àı£¨·Ç lazy init£©
+				// åˆå§‹åŒ–å‰©ä¸‹çš„å•ä¾‹ï¼ˆé lazy initï¼‰
 				finishBeanFactoryInitialization(beanFactory);
 
 				// Last step: publish corresponding event.
-				// Íê³ÉË¢ĞÂ¹ı³Ì£¬Í¨ÖªÉúÃüÖÜÆÚ´¦ÀíÆ÷ LifecycleProcessor Ë¢ĞÂ¹ı³Ì£¬Í¬Ê±·¢³ö ContextRefreshedEvent Í¨Öª¼àÌıÕß
+				// å®Œæˆåˆ·æ–°è¿‡ç¨‹ï¼Œé€šçŸ¥ç”Ÿå‘½å‘¨æœŸå¤„ç†å™¨ LifecycleProcessor åˆ·æ–°è¿‡ç¨‹ï¼ŒåŒæ—¶å‘å‡º ContextRefreshedEvent é€šçŸ¥ç›‘å¬è€…
 				finishRefresh();
 			}
 
@@ -530,12 +530,12 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		}
 
 		// Initialize any placeholder property sources in the context environment
-		// Ô¤Áô·½·¨£¬ÓÃ»§¿ÉÒÔ¸ù¾İ×ÔÉíĞèÒªÖØĞ´¸Ã·½·¨£¬
+		// é¢„ç•™æ–¹æ³•ï¼Œç”¨æˆ·å¯ä»¥æ ¹æ®è‡ªèº«éœ€è¦é‡å†™è¯¥æ–¹æ³•ï¼Œ
 		initPropertySources();
 
 		// Validate that all properties marked as required are resolvable
 		// see ConfigurablePropertyResolver#setRequiredProperties
-		// ÑéÖ¤ĞèÒªµÄÊôĞÔÎÄ¼şÊÇ·ñÒÑ¾­·ÅÈë»·¾³ÖĞ
+		// éªŒè¯éœ€è¦çš„å±æ€§æ–‡ä»¶æ˜¯å¦å·²ç»æ”¾å…¥ç¯å¢ƒä¸­
 		getEnvironment().validateRequiredProperties();
 	}
 
@@ -555,7 +555,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * @see #getBeanFactory()
 	 */
 	protected ConfigurableListableBeanFactory obtainFreshBeanFactory() {
-		// ³õÊ¼»¯ BeanFactory ²¢½øĞĞxml¶ÁÈ¡£¬²¢½«µÃµ½µÄbeanFactory¼ÇÂ¼ÔÚµ±Ç° contextÖĞ¡£
+		// åˆå§‹åŒ– BeanFactory å¹¶è¿›è¡Œxmlè¯»å–ï¼Œå¹¶å°†å¾—åˆ°çš„beanFactoryè®°å½•åœ¨å½“å‰ contextä¸­ã€‚
 		refreshBeanFactory();
 		ConfigurableListableBeanFactory beanFactory = getBeanFactory();
 		if (logger.isDebugEnabled()) {
@@ -571,17 +571,17 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 */
 	protected void prepareBeanFactory(ConfigurableListableBeanFactory beanFactory) {
 		// Tell the internal bean factory to use the context's class loader etc.
-		// ÉèÖÃ beanFactoryµÄ classLoadderÎªµ±Ç° context µÄ classLoader
+		// è®¾ç½® beanFactoryçš„ classLoadderä¸ºå½“å‰ context çš„ classLoader
 		beanFactory.setBeanClassLoader(getClassLoader());
-		// ÉèÖÃ beanFactory µÄ±íÌ¬Ê½ÓïÑÔ´¦ÀíÆ÷£¬spring3Ôö¼ÓÁË±í´ïÊ½ÓïÑÔµÄÖ§³Ö
-		// Ä¬ÈÏ¿ÉÒÔÊ¹ÓÃ#{bean.XXX}µÄĞÎÊ½À´µ÷ÓÃÏà¹ØÊôĞÔÖµ¡£
+		// è®¾ç½® beanFactory çš„è¡¨æ€å¼è¯­è¨€å¤„ç†å™¨ï¼Œspring3å¢åŠ äº†è¡¨è¾¾å¼è¯­è¨€çš„æ”¯æŒ
+		// é»˜è®¤å¯ä»¥ä½¿ç”¨#{bean.XXX}çš„å½¢å¼æ¥è°ƒç”¨ç›¸å…³å±æ€§å€¼ã€‚
 		beanFactory.setBeanExpressionResolver(new StandardBeanExpressionResolver());
-		//Ôö¼ÓÒ»¸öÄ¬ÈÏµÄpropertyEditor, Õâ¸öÖ÷ÒªÊÇ¶ÔbeanµÄÊôĞÔµÈÉèÖÃ¹ÜÀíµÄÒ»¸ö¹¤¾ß
+		//å¢åŠ ä¸€ä¸ªé»˜è®¤çš„propertyEditor, è¿™ä¸ªä¸»è¦æ˜¯å¯¹beançš„å±æ€§ç­‰è®¾ç½®ç®¡ç†çš„ä¸€ä¸ªå·¥å…·
 		beanFactory.addPropertyEditorRegistrar(new ResourceEditorRegistrar(this, getEnvironment()));
 
 		// Configure the bean factory with context callbacks.
 		beanFactory.addBeanPostProcessor(new ApplicationContextAwareProcessor(this));
-		// ÉèÖÃºöÂÔ×Ô¶¯×°ÅäµÄ½Ó¿Ú
+		// è®¾ç½®å¿½ç•¥è‡ªåŠ¨è£…é…çš„æ¥å£
 		beanFactory.ignoreDependencyInterface(ResourceLoaderAware.class);
 		beanFactory.ignoreDependencyInterface(ApplicationEventPublisherAware.class);
 		beanFactory.ignoreDependencyInterface(MessageSourceAware.class);
@@ -590,15 +590,15 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 		// BeanFactory interface not registered as resolvable type in a plain factory.
 		// MessageSource registered (and found for autowiring) as a bean.
-		// ÉèÖÃ¼¸¸ö×Ô¶¯×°ÅäµÄÌØÊâ¹æÔò¡£
-		// ¸öÈËÀí½âÕâÀï×¢²áµÄ¶ÔÏóÊÇÎªÁË±©Â¶ spring ÄÚ²¿Ê¹ÓÃµÄ¶ÔÏó£¬ÈçbeanFactory,ApplicationContext
+		// è®¾ç½®å‡ ä¸ªè‡ªåŠ¨è£…é…çš„ç‰¹æ®Šè§„åˆ™ã€‚
+		// ä¸ªäººç†è§£è¿™é‡Œæ³¨å†Œçš„å¯¹è±¡æ˜¯ä¸ºäº†æš´éœ² spring å†…éƒ¨ä½¿ç”¨çš„å¯¹è±¡ï¼Œå¦‚beanFactory,ApplicationContext
 		beanFactory.registerResolvableDependency(BeanFactory.class, beanFactory);
 		beanFactory.registerResolvableDependency(ResourceLoader.class, this);
 		beanFactory.registerResolvableDependency(ApplicationEventPublisher.class, this);
 		beanFactory.registerResolvableDependency(ApplicationContext.class, this);
 
 		// Detect a LoadTimeWeaver and prepare for weaving, if found.
-		// Ôö¼Ó¶Ô AspectJ µÄÖ§³Ö
+		// å¢åŠ å¯¹ AspectJ çš„æ”¯æŒ
 		if (beanFactory.containsBean(LOAD_TIME_WEAVER_BEAN_NAME)) {
 			beanFactory.addBeanPostProcessor(new LoadTimeWeaverAwareProcessor(beanFactory));
 			// Set a temporary ClassLoader for type matching.
@@ -606,7 +606,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		}
 
 		// Register default environment beans.
-		// ÉèÖÃÄ¬ÈÏµÄÏµÍ³»·¾³
+		// è®¾ç½®é»˜è®¤çš„ç³»ç»Ÿç¯å¢ƒ
 		if (!beanFactory.containsLocalBean(ENVIRONMENT_BEAN_NAME)) {
 			beanFactory.registerSingleton(ENVIRONMENT_BEAN_NAME, getEnvironment());
 		}
@@ -636,12 +636,12 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	protected void invokeBeanFactoryPostProcessors(ConfigurableListableBeanFactory beanFactory) {
 		// Invoke BeanDefinitionRegistryPostProcessors first, if any.
 		Set<String> processedBeans = new HashSet<String>();
-		// ¶Ô beanDefinitionRegistry ÀàĞÍµÄ´¦Àí
+		// å¯¹ beanDefinitionRegistry ç±»å‹çš„å¤„ç†
 		if (beanFactory instanceof BeanDefinitionRegistry) {
 			BeanDefinitionRegistry registry = (BeanDefinitionRegistry) beanFactory;
-			// Ó²±àÂë·½Ê½
+			// ç¡¬ç¼–ç æ–¹å¼
 			List<BeanFactoryPostProcessor> regularPostProcessors = new LinkedList<BeanFactoryPostProcessor>();
-			// Ó²±àÂë·½Ê½
+			// ç¡¬ç¼–ç æ–¹å¼
 			List<BeanDefinitionRegistryPostProcessor> registryPostProcessors =
 					new LinkedList<BeanDefinitionRegistryPostProcessor>();
 			for (BeanFactoryPostProcessor postProcessor : getBeanFactoryPostProcessors()) {
@@ -657,7 +657,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			}
 			Map<String, BeanDefinitionRegistryPostProcessor> beanMap =
 					beanFactory.getBeansOfType(BeanDefinitionRegistryPostProcessor.class, true, false);
-			// ÅäÖÃ·½Ê½
+			// é…ç½®æ–¹å¼
 			List<BeanDefinitionRegistryPostProcessor> registryPostProcessorBeans =
 					new ArrayList<BeanDefinitionRegistryPostProcessor>(beanMap.values());
 			OrderComparator.sort(registryPostProcessorBeans);
@@ -676,7 +676,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 		// Do not initialize FactoryBeans here: We need to leave all regular beans
 		// uninitialized to let the bean factory post-processors apply to them!
-		// ¶ÔÓÚÅäÖÃÖĞ¶ÁÈ¡µÄ beanFactoryPostProcesor µÄ´¦Àí
+		// å¯¹äºé…ç½®ä¸­è¯»å–çš„ beanFactoryPostProcesor çš„å¤„ç†
 		String[] postProcessorNames =
 				beanFactory.getBeanNamesForType(BeanFactoryPostProcessor.class, true, false);
 
@@ -685,11 +685,11 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		List<BeanFactoryPostProcessor> priorityOrderedPostProcessors = new ArrayList<BeanFactoryPostProcessor>();
 		List<String> orderedPostProcessorNames = new ArrayList<String>();
 		List<String> nonOrderedPostProcessorNames = new ArrayList<String>();
-		// ¶Ôºó´¦ÀíÆ÷½øĞĞ·ÖÀà
+		// å¯¹åå¤„ç†å™¨è¿›è¡Œåˆ†ç±»
 		for (String ppName : postProcessorNames) {
 			if (processedBeans.contains(ppName)) {
 				// skip - already processed in first phase above
-				//ÒÑ¾­´¦Àí¹ıµÄ£¬ºöÂÔ
+				//å·²ç»å¤„ç†è¿‡çš„ï¼Œå¿½ç•¥
 			}
 			else if (isTypeMatch(ppName, PriorityOrdered.class)) {
 				priorityOrderedPostProcessors.add(beanFactory.getBean(ppName, BeanFactoryPostProcessor.class));
@@ -703,7 +703,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		}
 
 		// First, invoke the BeanFactoryPostProcessors that implement PriorityOrdered.
-		// °´ÕÕ order ÅÅĞò
+		// æŒ‰ç…§ order æ’åº
 		OrderComparator.sort(priorityOrderedPostProcessors);
 		invokeBeanFactoryPostProcessors(priorityOrderedPostProcessors, beanFactory);
 
@@ -712,12 +712,12 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		for (String postProcessorName : orderedPostProcessorNames) {
 			orderedPostProcessors.add(getBean(postProcessorName, BeanFactoryPostProcessor.class));
 		}
-		// °´ÕÕ order ÅÅĞò
+		// æŒ‰ç…§ order æ’åº
 		OrderComparator.sort(orderedPostProcessors);
 		invokeBeanFactoryPostProcessors(orderedPostProcessors, beanFactory);
 
 		// Finally, invoke all other BeanFactoryPostProcessors.
-		// ×îºó£¬µ÷ÓÃËùÓĞµÄ BeanFactoryPostProcessors
+		// æœ€åï¼Œè°ƒç”¨æ‰€æœ‰çš„ BeanFactoryPostProcessors
 		List<BeanFactoryPostProcessor> nonOrderedPostProcessors = new ArrayList<BeanFactoryPostProcessor>();
 		for (String postProcessorName : nonOrderedPostProcessorNames) {
 			nonOrderedPostProcessors.add(getBean(postProcessorName, BeanFactoryPostProcessor.class));
@@ -748,20 +748,20 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		// a bean is created during BeanPostProcessor instantiation, i.e. when
 		// a bean is not eligible for getting processed by all BeanPostProcessors.
 
-		// BeanPostProcessorChecker ÊÇÒ»¸öÆÕÍ¨µÄĞÅÏ¢´òÓ¡£¬¿ÉÄÜ»áÓĞĞ©Çé¿ö
-		// µ± spring µÄÅäÖÃÖĞµÄºó´¦ÀíÆ÷»¹Ã»ÓĞ±»×¢²á¾ÍÒÑ¾­¿ªÊ¼ÁË beanµÄ³õÊ¼»¯Ê±
-		// ±ã»á´òÓ¡³ö BeanPostProcessorChecker ÖĞÉè¶¨µÄĞÅÏ¢
+		// BeanPostProcessorChecker æ˜¯ä¸€ä¸ªæ™®é€šçš„ä¿¡æ¯æ‰“å°ï¼Œå¯èƒ½ä¼šæœ‰äº›æƒ…å†µ
+		// å½“ spring çš„é…ç½®ä¸­çš„åå¤„ç†å™¨è¿˜æ²¡æœ‰è¢«æ³¨å†Œå°±å·²ç»å¼€å§‹äº† beançš„åˆå§‹åŒ–æ—¶
+		// ä¾¿ä¼šæ‰“å°å‡º BeanPostProcessorChecker ä¸­è®¾å®šçš„ä¿¡æ¯
 		int beanProcessorTargetCount = beanFactory.getBeanPostProcessorCount() + 1 + postProcessorNames.length;
 		beanFactory.addBeanPostProcessor(new BeanPostProcessorChecker(beanFactory, beanProcessorTargetCount));
 
 		// Separate between BeanPostProcessors that implement PriorityOrdered,
 		// Ordered, and the rest.
-		// Ê¹ÓÃ priorityOrdered ±£Ö¤Ë³Ğò
+		// ä½¿ç”¨ priorityOrdered ä¿è¯é¡ºåº
 		List<BeanPostProcessor> priorityOrderedPostProcessors = new ArrayList<BeanPostProcessor>();
 		List<BeanPostProcessor> internalPostProcessors = new ArrayList<BeanPostProcessor>();
-		// Ê¹ÓÃ ordered ±£Ö¤
+		// ä½¿ç”¨ ordered ä¿è¯
 		List<String> orderedPostProcessorNames = new ArrayList<String>();
-		// ÎŞĞò BeanPostProcessor
+		// æ— åº BeanPostProcessor
 		List<String> nonOrderedPostProcessorNames = new ArrayList<String>();
 		for (String ppName : postProcessorNames) {
 			if (isTypeMatch(ppName, PriorityOrdered.class)) {
@@ -810,7 +810,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		OrderComparator.sort(internalPostProcessors);
 		registerBeanPostProcessors(beanFactory, internalPostProcessors);
 
-		// Ìí¼Ó ApplicationListener Ì½²âÆ÷
+		// æ·»åŠ  ApplicationListener æ¢æµ‹å™¨
 		beanFactory.addBeanPostProcessor(new ApplicationListenerDetector());
 	}
 
@@ -1307,7 +1307,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 */
 	protected MessageSource getInternalParentMessageSource() {
 		return (getParent() instanceof AbstractApplicationContext) ?
-			((AbstractApplicationContext) getParent()).messageSource : getParent();
+				((AbstractApplicationContext) getParent()).messageSource : getParent();
 	}
 
 
