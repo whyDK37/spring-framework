@@ -21,22 +21,22 @@ public class BeanFactoryTest2 {
 
             @Override
             public void defaultsRegistered(DefaultsDefinition defaultsDefinition) {
-
+                System.out.println("------------"+defaultsDefinition);
             }
 
             @Override
             public void componentRegistered(ComponentDefinition componentDefinition) {
-
+                System.out.println("------------"+componentDefinition);
             }
 
             @Override
             public void aliasRegistered(AliasDefinition aliasDefinition) {
-
+                System.out.println("------------"+aliasDefinition);
             }
 
             @Override
             public void importProcessed(ImportDefinition importDefinition) {
-
+                System.out.println("------------"+importDefinition);
             }
         });
         reader.loadBeanDefinitions(new ClassPathResource("c2/beanFactory.xml"));
