@@ -112,10 +112,15 @@ public abstract class AopNamespaceUtils {
 
 	private static void useClassProxyingIfNecessary(BeanDefinitionRegistry registry, Element sourceElement) {
 		if (sourceElement != null) {
+			// 对 proxy-target-class 属性处理
+//			如果设置了此属性，spring会强制使用cglib代理
 			boolean proxyTargetClass = Boolean.valueOf(sourceElement.getAttribute(PROXY_TARGET_CLASS_ATTRIBUTE));
 			if (proxyTargetClass) {
 				AopConfigUtils.forceAutoProxyCreatorToUseClassProxying(registry);
 			}
+			// 对 expose-proxy 属性处理
+//			代理内调用本身的方法是，aop不会有效果，这是需要启用此属性暴露代理类本身。
+//			并使用AopContext.currentProxy()获取代理类，再调用即可。
 			boolean exposeProxy = Boolean.valueOf(sourceElement.getAttribute(EXPOSE_PROXY_ATTRIBUTE));
 			if (exposeProxy) {
 				AopConfigUtils.forceAutoProxyCreatorToExposeProxy(registry);

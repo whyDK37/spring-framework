@@ -64,6 +64,17 @@ public abstract class AbstractAdvisorAutoProxyCreator extends AbstractAutoProxyC
     }
 
 
+    /**
+     * 对于获取 bean 的增强方法，包含的步骤至少有两个，
+     * 1，获取所有的增强器
+     * 2，寻找适合当前 bean 的增强器
+     *
+     * 如果没有，返回 DO_NOT_PROXY.
+     * @param beanClass          the class of the bean to advise
+     * @param beanName           the name of the bean
+     * @param targetSource
+     * @return
+     */
     @Override
     protected Object[] getAdvicesAndAdvisorsForBean(Class beanClass, String beanName, TargetSource targetSource) {
         List advisors = findEligibleAdvisors(beanClass, beanName);
