@@ -73,6 +73,10 @@ public class BeanFactoryAspectJAdvisorsBuilder {
 
 
 	/**
+	 * 1，遍历所有的 beanName ，这一步骤中所有在 beanFactory 中注册的 Bean 都会被提取出来。
+	 * 2，遍历所有的 beanName, 并找出生命 AspectJ 注解的类， 再进一步处理
+	 * 3，对编辑为 AspectJ注解的类进行增强器的提取。
+	 * 4，降提取结果加入缓存。
 	 * Look for AspectJ-annotated aspect beans in the current bean factory,
 	 * and return to a list of Spring AOP Advisors representing them.
 	 * <p>Creates a Spring Advisor for each AspectJ advice method.
