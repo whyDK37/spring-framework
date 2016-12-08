@@ -906,7 +906,7 @@ public class DispatcherServlet extends FrameworkServlet {
 				// Determine handler for the current request.
 				mappedHandler = getHandler(processedRequest, false);
 				if (mappedHandler == null || mappedHandler.getHandler() == null) {
-					// if no mappedHandler, report error message
+					// if no mappedHandler, report 404 error message
 					noHandlerFound(processedRequest, response);
 					return;
 				}

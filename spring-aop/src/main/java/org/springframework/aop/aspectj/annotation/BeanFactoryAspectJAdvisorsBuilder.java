@@ -110,7 +110,6 @@ public class BeanFactoryAspectJAdvisorsBuilder {
 					if (beanType == null) {
 						continue;
 					}
-
 					// 如果存在 Aspect 注解
 					if (this.advisorFactory.isAspect(beanType)) {
 						aspectNames.add(beanName);
@@ -118,7 +117,7 @@ public class BeanFactoryAspectJAdvisorsBuilder {
 						if (amd.getAjType().getPerClause().getKind() == PerClauseKind.SINGLETON) {
 							MetadataAwareAspectInstanceFactory factory =
 									new BeanFactoryAspectInstanceFactory(this.beanFactory, beanName);
-							// 解释AspectJ注解中的增强方法
+							// importance 解释AspectJ,获取advisor
 							List<Advisor> classAdvisors = this.advisorFactory.getAdvisors(factory);
 							if (this.beanFactory.isSingleton(beanName)) {
 								this.advisorsCache.put(beanName, classAdvisors);
