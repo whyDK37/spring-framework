@@ -114,14 +114,15 @@ public class ReflectiveAspectJAdvisorFactory extends AbstractAspectJAdvisorFacto
 		}
 
 		// If it's a per target aspect, emit the dummy instantiating aspect.
+		// 如果增强器不为空且配置的延迟初始化，那么需要在首位加入同步实例化增强器
+		// 考虑到在配置中可能会将增强配置成延迟初始化，那么需要在首位加入同步实例化增强器一保证增强器使用之前的实例化
 		if (!advisors.isEmpty() && lazySingletonAspectInstanceFactory.getAspectMetadata().isLazilyInstantiated()) {
-			// 如果增强器不为空且配置的延迟初始化，那么需要在首位加入同步实例化增强器
 			Advisor instantiationAdvisor = new SyntheticInstantiationAdvisor(lazySingletonAspectInstanceFactory);
 			advisors.add(0, instantiationAdvisor);
 		}
 
-		// Find introduction fields.
-		// 获取 DeclareParents 注解
+		// Find introduction fields
+		// 最后获取 DeclareParents 注解
 		for (Field field : aspectClass.getDeclaredFields()) {
 			Advisor advisor = getDeclareParentsAdvisor(field);
 			if (advisor != null) {
@@ -182,7 +183,7 @@ public class ReflectiveAspectJAdvisorFactory extends AbstractAspectJAdvisorFacto
 		if (ajexp == null) {
 			return null;
 		}
-		// 根据切点信息获取增强器
+		// 根据切点信息获取增强器，根据不同的增强器初始化
 		return new InstantiationModelAwarePointcutAdvisorImpl(
 				this, ajexp, aif, candidateAdviceMethod, declarationOrderInAspect, aspectName);
 	}

@@ -85,7 +85,7 @@ class InstantiationModelAwarePointcutAdvisorImpl
 			this.lazy = true;
 		}
 		else {
-			// A singleton aspect.
+			// importance A singleton aspect.
 			this.instantiatedAdvice = instantiateAdvice(this.declaredPointcut);
 			this.pointcut = declaredPointcut;
 			this.lazy = false;
