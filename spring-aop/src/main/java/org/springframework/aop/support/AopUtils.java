@@ -280,7 +280,9 @@ public abstract class AopUtils {
 			return candidateAdvisors;
 		}
 		List<Advisor> eligibleAdvisors = new LinkedList<Advisor>();
+//		首先处理Introduction增强，例如：DeclareParentsAdvisor，DefaultIntroductionAdvisor
 		for (Advisor candidate : candidateAdvisors) {
+//			importance
 			if (candidate instanceof IntroductionAdvisor && canApply(candidate, clazz)) {
 				eligibleAdvisors.add(candidate);
 			}
@@ -291,6 +293,7 @@ public abstract class AopUtils {
 				// already processed
 				continue;
 			}
+			// 处理普通 bean
 			if (canApply(candidate, clazz, hasIntroductions)) {
 				eligibleAdvisors.add(candidate);
 			}

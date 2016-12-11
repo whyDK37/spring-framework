@@ -465,28 +465,33 @@ public abstract class AbstractAutoProxyCreator extends ProxyConfig
 		// Copy our properties (proxyTargetClass etc) inherited from ProxyConfig.
 		proxyFactory.copyFrom(this);
 
+//		决定使用接口代理还是类代理
 		if (!shouldProxyTargetClass(beanClass, beanName)) {
 			// Must allow for introductions; can't just set interfaces to
 			// the target's interfaces only.
 			Class<?>[] targetInterfaces = ClassUtils.getAllInterfacesForClass(beanClass, this.proxyClassLoader);
 			for (Class<?> targetInterface : targetInterfaces) {
+//				添加代理接口
 				proxyFactory.addInterface(targetInterface);
 			}
 		}
 
 		Advisor[] advisors = buildAdvisors(beanName, specificInterceptors);
 		for (Advisor advisor : advisors) {
+//			importance 添加增强器
 			proxyFactory.addAdvisor(advisor);
 		}
 
+//		设置要代理的类
 		proxyFactory.setTargetSource(targetSource);
+//		定制代理工厂
 		customizeProxyFactory(proxyFactory);
 
 		proxyFactory.setFrozen(this.freezeProxy);
 		if (advisorsPreFiltered()) {
 			proxyFactory.setPreFiltered(true);
 		}
-
+//		importance
 		return proxyFactory.getProxy(this.proxyClassLoader);
 	}
 
@@ -535,6 +540,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyConfig
 
 		List<Object> allInterceptors = new ArrayList<Object>();
 		if (specificInterceptors != null) {
+			//加入拦截器
 			allInterceptors.addAll(Arrays.asList(specificInterceptors));
 			if (commonInterceptors != null) {
 				if (this.applyCommonInterceptorsFirst) {
@@ -553,6 +559,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyConfig
 		}
 
 		Advisor[] advisors = new Advisor[allInterceptors.size()];
+//		拦截器转化为 advisor
 		for (int i = 0; i < allInterceptors.size(); i++) {
 			advisors[i] = this.advisorAdapterRegistry.wrap(allInterceptors.get(i));
 		}

@@ -1,0 +1,110 @@
+@startuml
+title Spring Aop initialize
+autonumber
+Application -> AnnotationAwareAspectJAutoProxyCreator: postProcessAfterInitialization
+AnnotationAwareAspectJAutoProxyCreator -> AbstractAutoProxyCreator: super.postProcessAfterInitialization
+
+AbstractAutoProxyCreator -> AbstractAutoProxyCreator:getCacheKey
+AbstractAutoProxyCreator -> AbstractAutoProxyCreator:wrapIfNecessary
+
+AnnotationAwareAspectJAutoProxyCreator <- AbstractAutoProxyCreator: IsInfrastructureClass
+AnnotationAwareAspectJAutoProxyCreator -> AbstractAutoProxyCreator: super.IsInfrastructureClass
+AnnotationAwareAspectJAutoProxyCreator -> AbstractAspectJAdvisorFactory:isAspect
+AbstractAspectJAdvisorFactory -> AbstractAspectJAdvisorFactory:hasAspectAnnotation
+AbstractAspectJAdvisorFactory -> AbstractAspectJAdvisorFactory:compiledByAjc
+
+alt is infrastructure class
+    Application <-- AbstractAutoProxyCreator  :return bean
+
+else not a infrastructure class
+
+    AbstractAutoProxyCreator -> AbstractAdvisorAutoProxyCreator: getAdvicesAndAdvisorsForBean
+    AbstractAdvisorAutoProxyCreator -> AbstractAdvisorAutoProxyCreator:findEligibleAdvisors
+
+    AnnotationAwareAspectJAutoProxyCreator <- AbstractAdvisorAutoProxyCreator:findCandidateAdvisors
+    AnnotationAwareAspectJAutoProxyCreator -> AbstractAdvisorAutoProxyCreator:findCandidateAdvisors
+    AnnotationAwareAspectJAutoProxyCreator -> BeanFactoryAspectJAdvisorsBuilder:buildAspectJAdvisors
+
+    BeanFactoryAspectJAdvisorsBuilder -[#0000FF]> ReflectiveAspectJAdvisorFactory: getAdvisors
+    ReflectiveAspectJAdvisorFactory -> ReflectiveAspectJAdvisorFactory: getAdvisorMethods
+
+    loop getAdvisorMethods size
+        ReflectiveAspectJAdvisorFactory -> ReflectiveAspectJAdvisorFactory: getAdvisor
+        ReflectiveAspectJAdvisorFactory -> ReflectiveAspectJAdvisorFactory: getPointcut
+
+        ReflectiveAspectJAdvisorFactory -> AbstractAspectJAdvisorFactory:findAspectJAnnotationOnMethod
+
+        ReflectiveAspectJAdvisorFactory -> InstantiationModelAwarePointcutAdvisorImpl:init
+        InstantiationModelAwarePointcutAdvisorImpl -> InstantiationModelAwarePointcutAdvisorImpl:instantiateAdvice(this.declaredPointcut)
+        ReflectiveAspectJAdvisorFactory <- InstantiationModelAwarePointcutAdvisorImpl:getAdvice
+        ReflectiveAspectJAdvisorFactory --> InstantiationModelAwarePointcutAdvisorImpl:Advice
+        note left: 根据不同的注解类型封装不同的增强器
+    end
+
+    alt SyntheticInstantiationAdvisor(DefaultPointcutAdvisor)
+    else advisors 不为空并且配置了增强器延迟初始化
+        ReflectiveAspectJAdvisorFactory -> ReflectiveAspectJAdvisorFactory:advisors.add(0, instantiationAdvisor)
+    end
+
+    loop aspectClass.getDeclaredFields()
+        ReflectiveAspectJAdvisorFactory -> ReflectiveAspectJAdvisorFactory: getDeclareParentsAdvisor
+    end
+
+    AbstractAdvisorAutoProxyCreator ->AbstractAdvisorAutoProxyCreator: findAdvisorsThatCanApply
+    AbstractAdvisorAutoProxyCreator ->AopUtils: findAdvisorsThatCanApply
+    note left:首先处理Introduction增强，例如：DeclareParentsAdvisor，DefaultIntroductionAdvisor，再处理普通 bean
+    AopUtils ->AopUtils: canApply
+    note left:真正的匹配在 canApply中完成
+
+    AbstractAutoProxyCreator <-- AbstractAdvisorAutoProxyCreator:specificInterceptors
+
+    alt specificInterceptors != DO_NOT_PROXY
+        AbstractAutoProxyCreator ->AbstractAutoProxyCreator:createProxy
+        note left:此方法只是一些属性的设置，真正创建代理的工作委托给了ProxyFactory
+        AbstractAutoProxyCreator ->ProxyFactory:create
+        ProxyFactory -> ProxyFactory:copyFrom(this)
+        alt !shouldProxyTargetClass
+            AbstractAutoProxyCreator ->ClassUtils:getAllInterfacesForClass
+            AbstractAutoProxyCreator <--ClassUtils:targetInterfaces
+             loop targetInterfaces
+                 AbstractAutoProxyCreator -> ProxyFactory: addInterface
+                 note left:添加代理接口
+             end
+        end
+
+        AbstractAutoProxyCreator <--> AbstractAutoProxyCreator:buildAdvisors
+        note left #FFAAAA
+            importance
+            ====
+            return advisors
+        end note
+
+        loop advisors
+            AbstractAutoProxyCreator -> ProxyFactory: addAdvisor
+            note left:添加增强器
+        end
+
+        AbstractAutoProxyCreator -> ProxyFactory: setTargetSource
+        note left : 设置要代理的类
+        AbstractAutoProxyCreator -> AbstractAutoProxyCreator: customizeProxyFactory
+        AbstractAutoProxyCreator -> ProxyFactory: setFrozen
+        AbstractAutoProxyCreator -> ProxyFactory: setPreFiltered
+
+        AbstractAutoProxyCreator -> ProxyFactory: getProxy
+        ProxyFactory -> ProxyCreatorSupport: createAopProxy
+        ProxyCreatorSupport -> ProxyCreatorSupport: getAopProxyFactory
+        ProxyCreatorSupport -> DefaultAopProxyFactory: createAopProxy
+        note left:key method
+        ProxyFactory <-- ProxyCreatorSupport: AopProxy
+        note left:return CglibProxyFactory or JdkDynamicAopProxy
+        ProxyFactory <-- AopProxy: getProxy
+
+        AbstractAutoProxyCreator <-- ProxyFactory: proxy bean
+
+        Application <-- AbstractAutoProxyCreator:return proxy bean
+    else return raw bean
+        Application <-- AbstractAutoProxyCreator:return bean
+    end
+end
+
+@enduml

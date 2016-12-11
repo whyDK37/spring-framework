@@ -157,14 +157,27 @@ final class JdkDynamicAopProxy implements AopProxy, InvocationHandler, Serializa
 		Object target = null;
 
 		try {
+			// equals 方法的处理
 			if (!this.equalsDefined && AopUtils.isEqualsMethod(method)) {
 				// The target does not implement the equals(Object) method itself.
 				return equals(args[0]);
 			}
+			// hascode 方法的处理
 			if (!this.hashCodeDefined && AopUtils.isHashCodeMethod(method)) {
 				// The target does not implement the hashCode() method itself.
 				return hashCode();
 			}
+
+			/*
+			class 类的isAssignableFrom(Class cls)方法：
+			如果调用这个方法的是class或接口与参数cls表示的类或接口相同，
+			或者是参数cls表示的类或接口的弗雷，则返回true.
+			形象地：自身类.class.isAssignableFrom(自身类或四类.class) 返回true
+			eg.
+			System.out.println(ArrayList.class.isAssignableFrom(Object.class) == false);
+			System.out.println(Object.class.isAssignableFrom(ArrayList.class) == true);
+
+			 */
 			if (!this.advised.opaque && method.getDeclaringClass().isInterface() &&
 					method.getDeclaringClass().isAssignableFrom(Advised.class)) {
 				// Service invocations on ProxyConfig with the proxy config...
@@ -172,7 +185,7 @@ final class JdkDynamicAopProxy implements AopProxy, InvocationHandler, Serializa
 			}
 
 			Object retVal;
-
+//			有时目标对象内部的自我调用讲无法实施切面中的增强，需要通过此属性暴露代理对象
 			if (this.advised.exposeProxy) {
 				// Make invocation available if necessary.
 				oldProxy = AopContext.setCurrentProxy(proxy);
@@ -187,6 +200,7 @@ final class JdkDynamicAopProxy implements AopProxy, InvocationHandler, Serializa
 			}
 
 			// Get the interception chain for this method.
+			// 获取当前方法的拦截器
 			List<Object> chain = this.advised.getInterceptorsAndDynamicInterceptionAdvice(method, targetClass);
 
 			// Check whether we have any advice. If we don't, we can fallback on direct
