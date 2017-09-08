@@ -119,6 +119,7 @@ public abstract class HttpServletBean extends HttpServlet
 		}
 
 		// Set bean properties from init parameters.
+//		如下代码的作用是将Servlet初始化参数设置到该组件上
 		try {
 			PropertyValues pvs = new ServletConfigPropertyValues(getServletConfig(), this.requiredProperties);
 			BeanWrapper bw = PropertyAccessorFactory.forBeanPropertyAccess(this);
@@ -133,6 +134,7 @@ public abstract class HttpServletBean extends HttpServlet
 		}
 
 		// Let subclasses do whatever initialization they like.
+//		提供给子类初始化的扩展点，该方法由FrameworkServlet覆盖
 		initServletBean();
 
 		if (logger.isDebugEnabled()) {

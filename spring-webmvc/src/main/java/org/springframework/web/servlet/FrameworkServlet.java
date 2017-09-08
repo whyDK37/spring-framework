@@ -449,6 +449,10 @@ public abstract class FrameworkServlet extends HttpServletBean {
 	/**
 	 * Overridden method of {@link HttpServletBean}, invoked after any bean properties
 	 * have been set. Creates this servlet's WebApplicationContext.
+	 *
+	 * 通过initServletBean()进行Web上下文初始化，该方法主要覆盖一下两件事情：
+	 *      初始化web上下文；
+	 *      提供给子类初始化扩展点；
 	 */
 	@Override
 	protected final void initServletBean() throws ServletException {
@@ -459,6 +463,7 @@ public abstract class FrameworkServlet extends HttpServletBean {
 		long startTime = System.currentTimeMillis();
 
 		try {
+//			初始化Web上下文
 			this.webApplicationContext = initWebApplicationContext();
 			initFrameworkServlet();
 		}
@@ -489,6 +494,7 @@ public abstract class FrameworkServlet extends HttpServletBean {
 	 */
 	protected WebApplicationContext initWebApplicationContext() {
 		// rootContext is created in ContextLoaderListener
+//		ROOT上下文（ContextLoaderListener加载的）
 		WebApplicationContext rootContext =
 				WebApplicationContextUtils.getWebApplicationContext(getServletContext());
 		WebApplicationContext wac = null;
@@ -496,6 +502,7 @@ public abstract class FrameworkServlet extends HttpServletBean {
 		// 这一步是为了校验当前实例是否是通过构造函数创建的，如果是通过构造函数创建的，webApplicationContext有可能不为空
 		if (this.webApplicationContext != null) {
 			// A context instance was injected at construction time -> use it
+//			在创建该Servlet注入的上下文
 			wac = this.webApplicationContext;
 			if (wac instanceof ConfigurableWebApplicationContext) {
 				ConfigurableWebApplicationContext cwac = (ConfigurableWebApplicationContext) wac;
@@ -516,10 +523,12 @@ public abstract class FrameworkServlet extends HttpServletBean {
 			// has been registered in the servlet context. If one exists, it is assumed
 			// that the parent context (if any) has already been set and that the
 			// user has performed any initialization such as setting the context id
+			//2、查找已经绑定的上下文
 			wac = findWebApplicationContext();
 		}
 		if (wac == null) {
 			// No context instance is defined for this servlet -> create a local one
+			//3、如果没有找到相应的上下文，并指定父亲为ContextLoaderListener
 			wac = createWebApplicationContext(rootContext);
 		}
 
@@ -527,6 +536,7 @@ public abstract class FrameworkServlet extends HttpServletBean {
 			// Either the context is not a ConfigurableApplicationContext with refresh
 			// support or the context injected at construction time had already been
 			// refreshed -> trigger initial onRefresh manually here.
+			//4、刷新上下文（执行一些初始化）
 			onRefresh(wac);
 		}
 
@@ -541,6 +551,8 @@ public abstract class FrameworkServlet extends HttpServletBean {
 		}
 
 		return wac;
+//		从initWebApplicationContext（）方法可以看出，基本上如果ContextLoaderListener加载了上下文将作为根上下文（DispatcherServlet的父容器）。
+//		最后调用了onRefresh()方法执行容器的一些初始化，这个方法由子类实现，来进行扩展。
 	}
 
 	/**

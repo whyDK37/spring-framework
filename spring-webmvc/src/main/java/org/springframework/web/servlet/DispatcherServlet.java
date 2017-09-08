@@ -439,6 +439,7 @@ public class DispatcherServlet extends FrameworkServlet {
 
 	/**
 	 * This implementation calls {@link #initStrategies}.
+	 * DispatcherServlet继承FrameworkServlet，并实现了onRefresh()方法提供一些前端控制器相关的配置：
 	 */
 	@Override
 	protected void onRefresh(ApplicationContext context) {
@@ -450,6 +451,7 @@ public class DispatcherServlet extends FrameworkServlet {
 	 * <p>May be overridden in subclasses in order to initialize further strategy objects.
 	 */
 	protected void initStrategies(ApplicationContext context) {
+		//初始化默认的Spring Web MVC框架使用的策略（如HandlerMapping）
 		initMultipartResolver(context);
 		initLocaleResolver(context);
 		initThemeResolver(context);
