@@ -4,7 +4,7 @@ The following has been tested against Intellij IDEA 12.0
 
 _Within your locally cloned spring-framework working directory:_
 
-1. Generate IDEA metadata with `./gradlew :spring-oxm:compileTestJava cleanIdea idea`
+1. Generate IDEA metadata with `./gradlew :spring-oxm:compileTestJava cleanIdea idea` or `./gradlew cleanIdea idea` 
 2. Import into IDEA as usual
 3. Set the Project JDK as appropriate
 4. Add git support
